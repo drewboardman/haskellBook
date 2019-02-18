@@ -1,1 +1,3 @@
 vimlog
+*.o
+*.hi

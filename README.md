@@ -1,3 +1,6 @@
+Haskell Book
+------------
+
 ## Exercises to revisit
 * Ch4 exercise 4 (pg 112)
 * Ch5 Currying types (pg 138)
@@ -20,3 +23,11 @@
 * When there is a lowercase letter in a type signature, it is a *type variable*
   and it is polymorphic
   - `id :: a -> a`
+
+Real World Haskell
+-----------------------
+## Compiling with `ghc`
+* when you compile a `hs` file with something like `ghc -c MyFile.hs`, you get
+  two new files:
+    - `MyFile.hi` - this is an interface file
+    - `MyFile.o` - this is an object file
