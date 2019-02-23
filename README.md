@@ -31,3 +31,17 @@ Real World Haskell
   two new files:
     - `MyFile.hi` - this is an interface file
     - `MyFile.o` - this is an object file
+
+Generics
+------------
+* [sawse](http://www.stephendiehl.com/posts/generics.html)
+* Generics are a form of *datatype-generic* programming
+* A sum type, is a data structure used to hold a value that could take on several different, but fixed, types. For example:
+
+```haskell
+data Pastry
+  = Turnover
+  | Macaroon
+  | Brownie
+  | Cookie
+```
