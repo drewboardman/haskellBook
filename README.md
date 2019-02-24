@@ -45,3 +45,6 @@ data Pastry
   | Brownie
   | Cookie
 ```
+
+Beam
+----------
