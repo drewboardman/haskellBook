@@ -48,3 +48,24 @@ data Pastry
 
 Beam
 ----------
+### Questions
+* when I create a *userKey* in the REPL with `userKey = UserId "john@doe.org"`,
+  I'd like to see it print after I make it. So I try to add:
+
+```haskell
+type UserId = PrimaryKey UserT Identity
+
+change to
+
+type UserId = PrimaryKey UserT Identity deriving (Show)
+```
+
+and this gives me the error:
+
+```
+   |
+27 | type UserId = PrimaryKey UserT Identity deriving (Show)
+   |
+```
+
+* what does `be` mean here? `instance Database be ShoppingCartDb`
