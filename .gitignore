@@ -1,3 +1,4 @@
 vimlog
 *.o
 *.hi
+*/build
