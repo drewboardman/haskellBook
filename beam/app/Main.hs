@@ -1,4 +1,5 @@
 module Main where
+import BeamUser
 
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = thing

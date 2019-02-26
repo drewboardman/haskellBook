@@ -9,9 +9,11 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module BeamUser where
+module BeamUser
+  ( thing
+  ) where
 
-import           Data.Text            (Text)
+import           Data.Text              (Text)
 import           Database.Beam
 import           Database.Beam.Sqlite
 import           Database.SQLite.Simple
@@ -54,4 +56,22 @@ instance Database be ShoppingCartDb
 shoppingCartDb :: DatabaseSettings be ShoppingCartDb
 shoppingCartDb = defaultDbSettings
 
--- conn <- open "shoppingcart1.db"
+thing :: IO ()
+thing = do
+  conn <- open "shoppingcart.db"
+  runBeamSqliteDebug putStrLn conn $
+    runInsert $ {- for debug output -}
+    insert (_shoppingCartUsers shoppingCartDb) $
+    insertValues
+      [ User
+          "james@example.com"
+          "James"
+          "Smith"
+          "b4cc344d25a2efe540adbf2678e2304c" {- james -}
+      , User
+          "betty@example.com"
+          "Betty"
+          "Jones"
+          "82b054bd83ffad9b6cf8bdb98ce3cc2f" {- betty -}
+      , User "sam@example.com" "Sam" "Taylor" "332532dcfaa1cbf61e2a266bd723612c" {- sam -}
+      ]

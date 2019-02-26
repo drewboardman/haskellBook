@@ -84,7 +84,7 @@ executable beamtutorial
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.12.0.0
+  build-depends:       base ^>=4.12.0.0, beamtutorial
 
   -- Directories containing source files.
   hs-source-dirs:      app
