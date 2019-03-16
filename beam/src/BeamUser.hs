@@ -10,7 +10,8 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 
 module BeamUser
-  ( thing
+  ( inserter
+  , reader
   ) where
 
 import           Data.Text              (Text)
@@ -18,6 +19,7 @@ import           Database.Beam
 import           Database.Beam.Sqlite
 import           Database.SQLite.Simple
 
+-- import           Database.Beam.Backend.SQL.SQL92
 -- convention is that table types are suffixed with a T
 data UserT f = User -- constructor has same name as table, but without the T
   { _userEmail     :: Columnar f Text -- the reason there is an _underscore is because of `lens`
@@ -56,8 +58,8 @@ instance Database be ShoppingCartDb
 shoppingCartDb :: DatabaseSettings be ShoppingCartDb
 shoppingCartDb = defaultDbSettings
 
-thing :: IO ()
-thing = do
+inserter :: IO ()
+inserter = do
   conn <- open "shoppingcart.db"
   runBeamSqliteDebug putStrLn conn $
     runInsert $ {- for debug output -}
@@ -73,5 +75,21 @@ thing = do
           "Betty"
           "Jones"
           "82b054bd83ffad9b6cf8bdb98ce3cc2f" {- betty -}
-      , User "sam@example.com" "Sam" "Taylor" "332532dcfaa1cbf61e2a266bd723612c" {- sam -}
+      , User
+          "sam@example.com"
+          "Sam"
+          "Taylor"
+          "332532dcfaa1cbf61e2a266bd723612c" {- sam -}
       ]
+
+-- I don't understand how to sanely type this....
+-- type DbThing = UserT (QExpr (Database.Beam.Backend.SQL.SQL92.Sql92SelectTableExpressionSyntax (Database.Beam.Backend.SQL.SQL92.Sql92SelectSelectTableSyntax select0)) s)
+-- allUsers :: Q select0 ShoppingCartDb s DbThing
+reader :: IO ()
+reader = do
+  conn <- open "shoppingcart.db"
+  runBeamSqliteDebug putStrLn conn $ do
+    users <- runSelectReturningList $ select allUsers
+    mapM_ (liftIO . putStrLn . show) users
+  where
+    allUsers = all_ (_shoppingCartUsers shoppingCartDb)
