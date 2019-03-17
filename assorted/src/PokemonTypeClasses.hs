@@ -4,33 +4,39 @@ module PokemonTypeClasses () where
 
 import           PokeModels
 
--- we are going to create a Pokemon Type Class
+-- we are going to create a MovePicker Type Class
 -- it is a subclass of the Show Type Class
 -- this means that `a` has an instance of Show
 -- and that `b` has an instance of Show
 
-class (Show a, Show b) => Pokemon a b where
+class (Pokemon a, PokeMove b) => MovePicker a b where
   pickMove :: a -> b
 
--- here we're going to define an instance of Pokemon for Fire pokemon and moves
+-- here we're going to define an instance of MovePicker for Fire pokemon and moves
 -- we have to implement the pickMove function
-instance Pokemon FirePokemon FireMove where
+instance MovePicker FirePokemon FireMove where
   pickMove Charmander = Ember
   pickMove Charmeleon = Flamethrower
   pickMove Charizard  = Fireblast
 
-instance Pokemon WaterPokemon WaterMove where
+instance MovePicker WaterPokemon WaterMove where
   pickMove Squirtle = Bubble
   pickMove _        = Watergun
 
-instance Pokemon GrassPokemon GrassMove where
+instance MovePicker GrassPokemon GrassMove where
   pickMove _ = Vinewhip
 
-class (Pokemon a b, Pokemon c d) => Battle a b c d where
-  battle :: a -> b -> IO ()
+-- class (MovePicker a b, MovePicker c d) => Battle a b c d where
+--   battle :: a -> c -> IO ()
 
-printBattle :: String -> String -> String -> String -> String -> IO ()
-printBattle pokemonOne moveOne pokemonTwo moveTwo winner = do
-  putStrLn $ pokemonOne ++ " used " ++ moveOne
-  putStrLn $ pokemonTwo ++ " used " ++ moveTwo
-  putStrLn $ "Winner is: " ++ winner ++ "\n"
+thing :: (MovePicker a c, MovePicker b d) => a -> b -> (String, String)
+thing a b = (aString, bString) where
+  aString = show $ (pickMove a :: c)
+  bString = show $ (pickMove b :: d)
+
+-- printBattle :: (MovePicker a c, MovePicker b d) => a -> b -> IO ()
+-- printBattle a b = do
+--   let aMove = pickMove a
+--   let bMove = pickMove b
+--   putStrLn $ (show a) ++ " used " ++ (show aMove)
+--   putStrLn $ (show b) ++ " used " ++ (show bMove)
