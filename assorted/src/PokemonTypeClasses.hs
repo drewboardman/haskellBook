@@ -2,41 +2,68 @@
 
 module PokemonTypeClasses () where
 
-import           PokeModels
+import Data.Tuple (swap)
+import Control.Applicative
 
--- we are going to create a MovePicker Type Class
--- it is a subclass of the Show Type Class
--- this means that `a` has an instance of Show
--- and that `b` has an instance of Show
+data Fire = Charmander | Charmeleon | Charizard deriving Show
+data Water = Squirtle | Wartortle | Blastoise deriving Show
+data Grass = Bulbasaur | Ivysaur | Venusaur deriving Show
 
-class (Pokemon a, PokeMove b) => MovePicker a b where
-  pickMove :: a -> b
+data FireMove = Ember | FlameThrower | FireBlast deriving Show
+data WaterMove = Bubble | WaterGun deriving Show
+data GrassMove = VineWhip deriving Show
 
--- here we're going to define an instance of MovePicker for Fire pokemon and moves
--- we have to implement the pickMove function
-instance MovePicker FirePokemon FireMove where
+class (Show pokemon, Show move) => Pokemon pokemon move where
+  pickMove :: pokemon -> move
+
+instance Pokemon Fire FireMove where
   pickMove Charmander = Ember
-  pickMove Charmeleon = Flamethrower
-  pickMove Charizard  = Fireblast
+  pickMove Charmeleon = FlameThrower
+  pickMove Charizard = FireBlast
 
-instance MovePicker WaterPokemon WaterMove where
+instance Pokemon Water WaterMove where
   pickMove Squirtle = Bubble
-  pickMove _        = Watergun
+  pickMove _ = WaterGun
 
-instance MovePicker GrassPokemon GrassMove where
-  pickMove _ = Vinewhip
+instance Pokemon Grass GrassMove where
+  pickMove _ = VineWhip
 
--- class (MovePicker a b, MovePicker c d) => Battle a b c d where
---   battle :: a -> c -> IO ()
+printBattle :: String -> String -> String -> String -> String -> IO ()
+printBattle pokemonOne moveOne pokemonTwo moveTwo winner = do
+  putStrLn $ pokemonOne ++ " used " ++ moveOne
+  putStrLn $ pokemonTwo ++ " used " ++ moveTwo
+  putStrLn $ "Winner is: " ++ winner ++ "\n"
 
-thing :: (MovePicker a c, MovePicker b d) => a -> b -> (String, String)
-thing a b = (aString, bString) where
-  aString = show $ (pickMove a :: c)
-  bString = show $ (pickMove b :: d)
+-- show Our Battle Type Class, yuck
+class (Pokemon pokemon move, Pokemon foe foeMove)
+  => Battle pokemon move foe foeMove where
+  battle :: pokemon -> foe -> IO (move, foeMove)
+  battle pokemon foe = do
+    printBattle (show pokemon) (show move) (show foe) (show foeMove) (show pokemon)
+    return (move, foeMove)
+   where
+    foeMove = pickMove foe
+    move = pickMove pokemon
 
--- printBattle :: (MovePicker a c, MovePicker b d) => a -> b -> IO ()
--- printBattle a b = do
---   let aMove = pickMove a
---   let bMove = pickMove b
---   putStrLn $ (show a) ++ " used " ++ (show aMove)
---   putStrLn $ (show b) ++ " used " ++ (show bMove)
+instance Battle Water WaterMove Fire FireMove
+instance Battle Fire FireMove Water WaterMove where
+  battle a b = swap <$> battle b a
+
+instance Battle Grass GrassMove Water WaterMove
+instance Battle Water WaterMove Grass GrassMove where
+  battle a b = fmap swap $ flip battle a b
+
+instance Battle Fire FireMove Grass GrassMove
+instance Battle Grass GrassMove Fire FireMove where
+  battle a b = swap <$> battle b a
+
+main :: IO ()
+main = do
+  battle Squirtle Charmander :: IO (WaterMove, FireMove)
+  battle Charmeleon Wartortle :: IO (FireMove, WaterMove)
+  battle Bulbasaur Blastoise :: IO (GrassMove, WaterMove)
+  battle Wartortle Ivysaur :: IO (WaterMove, GrassMove)
+  battle Charmeleon Ivysaur :: IO (FireMove, GrassMove)
+  battle Venusaur Charizard :: IO (GrassMove, FireMove)
+  putStrLn "Done Fighting"
+-- show /
