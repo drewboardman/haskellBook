@@ -1,9 +1,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module PokemonTypeClasses () where
+module PokemonTypeClasses (main) where
 
 import Data.Tuple (swap)
-import Control.Applicative
 
 data Fire = Charmander | Charmeleon | Charizard deriving Show
 data Water = Squirtle | Wartortle | Blastoise deriving Show
@@ -51,7 +50,7 @@ instance Battle Fire FireMove Water WaterMove where
 
 instance Battle Grass GrassMove Water WaterMove
 instance Battle Water WaterMove Grass GrassMove where
-  battle a b = fmap swap $ flip battle a b
+  battle a b = swap <$> battle b a
 
 instance Battle Fire FireMove Grass GrassMove
 instance Battle Grass GrassMove Fire FireMove where
@@ -59,11 +58,11 @@ instance Battle Grass GrassMove Fire FireMove where
 
 main :: IO ()
 main = do
-  battle Squirtle Charmander :: IO (WaterMove, FireMove)
-  battle Charmeleon Wartortle :: IO (FireMove, WaterMove)
-  battle Bulbasaur Blastoise :: IO (GrassMove, WaterMove)
-  battle Wartortle Ivysaur :: IO (WaterMove, GrassMove)
-  battle Charmeleon Ivysaur :: IO (FireMove, GrassMove)
-  battle Venusaur Charizard :: IO (GrassMove, FireMove)
+  _ <- battle Squirtle Charmander :: IO (WaterMove, FireMove)
+  _ <- battle Charmeleon Wartortle :: IO (FireMove, WaterMove)
+  _ <- battle Bulbasaur Blastoise :: IO (GrassMove, WaterMove)
+  _ <- battle Wartortle Ivysaur :: IO (WaterMove, GrassMove)
+  _ <- battle Charmeleon Ivysaur :: IO (FireMove, GrassMove)
+  _ <- battle Venusaur Charizard :: IO (GrassMove, FireMove)
   putStrLn "Done Fighting"
 -- show /

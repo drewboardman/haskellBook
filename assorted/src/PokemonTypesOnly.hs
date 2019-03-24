@@ -1,8 +1,7 @@
 module PokemonTypesOnly
-  (
-  ) where
+  ( pickFireMove, pickWaterMove , pickGrassMove) where
 
-import PokeModels
+import           PokeModels
 
 pickFireMove :: FirePokemon -> FireMove
 pickFireMove Charmander = Ember
@@ -14,4 +13,4 @@ pickWaterMove Squirtle = Bubble
 pickWaterMove _        = Watergun
 
 pickGrassMove :: GrassPokemon -> GrassMove
-pickGrassMove x = Vinewhip
+pickGrassMove _ = Vinewhip
