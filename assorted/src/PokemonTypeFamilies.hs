@@ -1,6 +1,6 @@
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeFamilies     #-}
+{-# LANGUAGE TypeFamilies          #-}
 
 module PokemonTypeFamilies (mainFamilies) where
 
@@ -16,19 +16,19 @@ instance Pokemon Fire where
   data Move Fire = Ember | Flamethrower | Fireblast deriving Show
   pickMove Charmander = Ember
   pickMove Charmeleon = Flamethrower
-  pickMove Charizard = Fireblast
+  pickMove Charizard  = Fireblast
 
 instance Pokemon Water where
   data Move Water = Bubble | Watergun deriving Show
-  pickMove Squirtle = Bubble
+  pickMove Squirtle  = Bubble
   pickMove Wartortle = Bubble
   pickMove Blastoise = Watergun
 
 instance Pokemon Grass where
   data Move Grass = Vinewhip deriving Show
   pickMove Bulbasaur = Vinewhip
-  pickMove Ivysaur = Vinewhip
-  pickMove Venusaur = Vinewhip
+  pickMove Ivysaur   = Vinewhip
+  pickMove Venusaur  = Vinewhip
 
 printBattle :: String -> String -> String -> String -> String -> IO ()
 printBattle pokemonOne moveOne pokemonTwo moveTwo battleWinner = do
@@ -40,7 +40,7 @@ class (Show (Winner type1 type2), Pokemon type1, Pokemon type2) => Battle type1 
   type Winner type1 type2 :: * -- what is this?
   type Winner type1 type2 = type1 -- default to type1 being winner
 
-  pickWinner :: type1 -> type2 -> (Winner type1 type2)
+  pickWinner :: type1 -> type2 -> Winner type1 type2
 
   battle :: type1 -> type2 -> IO ()
   battle type1 type2 = do
