@@ -1,3 +1,8 @@
+Topics I'm interested in covering
+--------------------------------
+* STM - Software Transactional memory
+* Monads vs Functors vs Monoids in Haskell
+
 Haskell Book
 ------------
 
