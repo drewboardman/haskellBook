@@ -38,6 +38,9 @@ executables:
     - -Wincomplete-record-updates
     - -Wincomplete-uni-patterns
     - -Wredundant-constraints
+    - -Wmissing-import-lists
+    - -Wmissing-export-lists
+
     dependencies:
     - assorted
 
