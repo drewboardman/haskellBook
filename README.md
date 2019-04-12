@@ -1,7 +1,18 @@
 Topics I'm interested in covering
 --------------------------------
 * STM - Software Transactional memory
-* Monads vs Functors vs Monoids in Haskell
+
+Monads vs Functors vs Monoids in Haskell
+----------------------------------------
+
+### Monoids
+* A monoid is a binary associative operation with an identity.
+  - a monoid is a **function** that:
+    * takes two arguments
+    * follows two laws: 
+      - associativity (can re-group the sets of arguments)
+        * `(a + b) + c == a + (b + c)`
+      - identity
 
 Haskell Book
 ------------
