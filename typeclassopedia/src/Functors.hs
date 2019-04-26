@@ -10,9 +10,12 @@ instance Functor (Either' e) where
 newtype Foo a b = Foo (a -> b)
 instance Functor (Foo a) where
   fmap f (Foo g) = Foo (\x -> f $ g x)
-    -- Implement Functor instances for ((,) e) and for Pair, defined as
 
+    -- Implement Functor instances for ((,) e) and for Pair, defined as
     -- data Pair a = Pair a a
+newtype Pair1 a b = Pair1 (a,b)
+instance Functor (Pair1 a) where
+  fmap f (Pair1 a b) = Pair1 (f a, f b)
 
     -- Explain their similarities and differences.
     -- Implement a Functor instance for the type ITree, defined as
