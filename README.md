@@ -10,9 +10,26 @@ Monads vs Functors vs Monoids in Haskell
   - a monoid is a **function** that:
     * takes two arguments
     * follows two laws: 
-      - associativity (can re-group the sets of arguments)
-        * `(a + b) + c == a + (b + c)`
-      - identity
+      - associativity and identity
+
+#### Associativity
+* can re-group the sets of arguments
+  - `(a + b) + c == a + (b + c)`
+
+```haskell
+mappend x (mappend y z) = mappend (mappend x y) z
+```
+
+* A good example for understanding is `Maybe`. Here is the source:
+
+```haskell
+instance Semigroup a => Semigroup (Maybe a) where
+    Nothing <> b       = b
+    a       <> Nothing = a
+    Just a  <> Just b  = Just (a <> b)
+
+    stimes = stimesMaybe
+```
 
 Haskell Book
 ------------
