@@ -44,5 +44,8 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
+    - -Wincomplete-uni-patterns
+    - -Wincomplete-record-updates
     dependencies:
     - typeclassopedia
