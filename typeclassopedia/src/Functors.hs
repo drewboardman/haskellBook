@@ -54,5 +54,5 @@ instance Functor ITree where
 
     -- If false, give a counterexample; if true, prove it by exhibiting some appropriate Haskell code.
 
-foo :: [Maybe Int] = [Just 1, Nothing, Just 18]
-example = map (\x -> fmap (*2) x) foo
+-- foo :: [Maybe Int] = [Just 1, Nothing, Just 18]
+-- example = map (\x -> fmap (*2) x) foo
