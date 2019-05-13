@@ -15,7 +15,7 @@ instance Functor ZipList where
 
 instance Applicative ZipList where
   pure :: a -> ZipList a
-  pure = undefined
+  pure a = ZipList [a]
 
   (<*>) :: ZipList(a -> b) -> ZipList a -> ZipList b
   (ZipList gs) <*> (ZipList xs) = ZipList (zipWith ($) gs xs)
@@ -24,3 +24,20 @@ instance Applicative ZipList where
   -- gs: list of functions that makes an a -> b
   -- xs: list of a's
   -- the ($) just applies the "g" function to the "a"
+
+newtype AppMaybe a = AppMaybe (Maybe a)
+
+instance Functor AppMaybe where
+  fmap :: (a -> b) -> AppMaybe a -> AppMaybe b
+  fmap _ (AppMaybe Nothing) = AppMaybe Nothing
+  fmap f (AppMaybe (Just x)) = AppMaybe (Just (f x))
+
+instance Applicative AppMaybe where
+  pure :: a -> AppMaybe a
+  pure x = AppMaybe (Just x)
+
+  (<*>) :: AppMaybe (a -> b) -> AppMaybe a -> AppMaybe b
+  (AppMaybe Nothing) <*> (AppMaybe Nothing) = AppMaybe Nothing
+  (AppMaybe Nothing) <*> (AppMaybe (Just _)) = AppMaybe Nothing
+  (AppMaybe (Just _)) <*> (AppMaybe Nothing) = AppMaybe Nothing
+  (AppMaybe (Just f)) <*> (AppMaybe (Just x)) = AppMaybe (Just (f x))
