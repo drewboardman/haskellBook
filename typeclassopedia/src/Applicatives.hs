@@ -37,11 +37,9 @@ instance Applicative AppMaybe where
   pure x = AppMaybe (Just x)
 
   (<*>) :: AppMaybe (a -> b) -> AppMaybe a -> AppMaybe b
-  (AppMaybe Nothing) <*> (AppMaybe Nothing) = AppMaybe Nothing
-  (AppMaybe Nothing) <*> (AppMaybe (Just _)) = AppMaybe Nothing
-  (AppMaybe (Just _)) <*> (AppMaybe Nothing) = AppMaybe Nothing
   (AppMaybe (Just f)) <*> (AppMaybe (Just x)) = AppMaybe (Just (f x))
+  _ <*> _ = AppMaybe Nothing
 
 sequenceAL :: Applicative f => [f a] -> f [a]
 sequenceAL [] = pure []
-sequenceAL fas = pure [a | f a <- fas]
+sequenceAL (x:xs) = (:) <$> x <*> sequenceAL xs
