@@ -1,7 +1,7 @@
 {-# LANGUAGE InstanceSigs        #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Applicatives () where
+module Applicatives (sequenceAL) where
 
 newtype ZipList a = ZipList { getZipList :: [a] }
 
