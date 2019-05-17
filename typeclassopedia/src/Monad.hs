@@ -12,8 +12,9 @@ instance Applicative ListMonad where
 
   (<*>) :: ListMonad (a -> b) -> ListMonad a -> ListMonad b
   _ <*> ListMonad [] = ListMonad []
-  ListMonad gs <*> ListMonad xs = [g x | x <- xs, g <- gs]
+  ListMonad gs <*> ListMonad xs = ListMonad [g x | x <- xs, g <- gs]
 
 instance Monad ListMonad where
   (>>=) :: ListMonad a -> (a -> ListMonad b) -> ListMonad b
   ListMonad [] >>= _ = ListMonad []
+  ListMonad xs >>= g = join $ [g x | x <- xs]
