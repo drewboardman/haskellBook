@@ -51,3 +51,20 @@ pure3 x = Func $ const x
 bind2 :: (e -> a) -> (a -> e -> b) -> e -> b
 -- same as \x -> (flip g x (f x))
 f `bind2` g = \x -> g (f x) x
+
+-- join2 :: Monad m => m (m a) -> ma
+-- join2 :: ((-> e) ((->) e a)) -> e -> a
+join2 :: (e -> e -> a) -> e -> a
+join2 f x = f x x
+
+-- local2 :: (r -> r) -> m a -> m a
+-- local2 :: (e -> e) -> ((->)e a) -> ((->)e a)
+local2 :: (e -> e) -> (e -> a) -> e -> a
+local2 _ f = f
+
+-- apparently that's wrong and the real answer is
+-- local :: (e -> e) -> (e -> a) -> e -> a
+-- local f action = action . f
+
+data Free f a = Var a | Node (f (Free f a))
+
