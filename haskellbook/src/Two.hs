@@ -1,5 +1,5 @@
 -- let x = 5; y = 6 in x * y
-module Multi where
+module Two where
 
 multi = x * y
   where
@@ -25,3 +25,9 @@ mult4 = z / x + y
     x = 7
     y = negate x
     z = y + 10
+
+sayHello :: String -> IO ()
+sayHello x = putStrLn ("Hello, " ++ x ++ "!")
+
+byThree :: Int -> Int
+byThree x = x * 3

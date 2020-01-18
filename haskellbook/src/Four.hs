@@ -1,9 +1,12 @@
-module Chapter4 where
+module Four where
 
+awesome :: [String]
 awesome = ["Papuchon", "curry", ":)"]
 
+also :: [String]
 also = ["Quake", "The Simons"]
 
+allAwesome :: [[String]]
 allAwesome = [awesome, also]
 
 data Mood
@@ -21,5 +24,5 @@ palindromer x = x == reverse x
 absoluter :: Integer -> Integer
 absoluter x = if x < 0 then negate x else x
 
-f :: (a,b) -> (c,d) -> ((b,d), (a,c))
+f :: (a, b) -> (c, d) -> ((b, d), (a, c))
 f x y = ((snd x, snd y), (fst x, fst y))

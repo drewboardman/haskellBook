@@ -1,5 +1,6 @@
-data Trivial =
-  Trivial'
+module Six where
+
+data Trivial = Trivial'
 
 -- "This instance is providing the Eq typeclass *for* the Trivial datatype"
 instance Eq Trivial where

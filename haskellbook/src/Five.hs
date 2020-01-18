@@ -1,6 +1,6 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 
-module Fiver where
+module Five where
 
 addStuff :: Integer -> Integer -> Integer
 addStuff a b = a + b + 5
@@ -14,7 +14,7 @@ x = undefined
 g :: a -> b -> c -> b
 g = undefined
 
-h :: (Num a, Num b) => a -> b -> b
+h :: a -> b -> b
 h = undefined
 
 jackal :: (Ord a, Eq b) => a -> b -> a
@@ -31,4 +31,3 @@ e = length [1,2,3,4,5]
 m = (length [1,2,3,4,5])>(length "test")
 
 big = (^) 5 $ 10
-wahoo = big $ 10
