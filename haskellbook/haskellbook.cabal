@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e2d20ebaa8a49434da9276df563ab41272ac3a906effed040bacfbab06f4e321
+-- hash: a59de46a9e6dc9e265278bfea817460fb38852c50321368b7ce28d29bee548fd
 
 name:           haskellbook
 version:        0.1.0.0
@@ -30,6 +30,7 @@ library
       Five
       Four
       Lib
+      ReaderCh
       Six
       Three
       Two
@@ -39,6 +40,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , mtl
     , split
   default-language: Haskell2010
 
@@ -52,6 +54,7 @@ executable haskellbook-exe
   build-depends:
       base >=4.7 && <5
     , haskellbook
+    , mtl
     , split
   default-language: Haskell2010
 
@@ -66,5 +69,6 @@ test-suite haskellbook-test
   build-depends:
       base >=4.7 && <5
     , haskellbook
+    , mtl
     , split
   default-language: Haskell2010
