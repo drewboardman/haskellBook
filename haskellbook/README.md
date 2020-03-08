@@ -43,3 +43,20 @@ Prelude> (Sum 2, (+1)) <*> (Sum 0, 0)
 Prelude> (Product 3, (+9))<*>(Product 2, 8)
 (Product {getProduct = 6},17)
 ```
+
+Another functionality of thinking about `Applicative` as Monoidal Functors is
+with `liftA2`
+
+```
+(+) <$> [1,2] <*> [3,5]
+-- becomes
+[(1+), (2+)] <*> [3,5]
+[4, 6, 5, 7]
+
+import Control.Applicative
+
+-- recall the signature of liftA2
+liftA2 :: (a -> b -> c) -> f a -> f b -> f c
+liftA2 (+) [1,2] [3,5]
+[4, 6, 5, 7]
+```
