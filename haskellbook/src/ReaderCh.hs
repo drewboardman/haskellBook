@@ -80,6 +80,17 @@ instance Applicative (Reader' r) where
   -- (Reader' f) <*> (Reader' ra) = Reader' (\r -> (f r) (ra r))
   (Reader' f) <*> (Reader' ra) = Reader' (f <*> ra)
 
+instance Monad (Reader' r) where
+  return :: a -> Reader' r a
+  return a = Reader' (\_ -> a)
+
+  (>>=) :: Reader' r a -> (a -> Reader' r b) -> Reader' r b
+  Reader' fa >>= farb = Reader' (\r -> (runReader $ farb $ fa r) r)
+  -- same as below
+  -- Reader' fa >>= farb = Reader' (\r ->
+  --   let (Reader' rTb) = farb (fa r)
+  --    in rTb r)
+
 -----------------------------------------------------
 newtype HumanName = HumanName String deriving (Eq, Show)
 
@@ -111,6 +122,20 @@ getDogR' = Dog . dogName <*> address
 getDogR'' :: Person -> Dog
 getDogR'' = Dog <$> dogName <*> address
 
+-- using the monad instance
+getDogRM :: Person -> Dog
+getDogRM = do
+  name <- dogName
+  addr <- address
+  pure $ Dog name addr
+
+-- using the monad instance and Reader'
+getDogRM' :: Reader' Person Dog
+getDogRM' = do
+  name <- Reader' (\p -> dogName p)
+  addr <- Reader' (\p -> address p)
+  pure $ Dog name addr
+
 -- -------- exercise ---------
 myLiftA2
   :: Applicative m
@@ -131,3 +156,19 @@ myLiftA3 f x y z = f <$> x <*> y <*> z
 
 asks' :: (r -> a) -> Reader' r a
 asks' f = Reader' f
+-----------------------------------------------------
+
+-- this is fmap :: f a -> (a -> f b) -> f b
+rdrMap :: (r -> a) -> (a -> b) -> r -> b
+rdrMap g f = (\r -> f (g r))
+-- rdrMap g f = f <$> g
+
+-- this is bind :: m a -> (a -> m b) -> m b
+rdrBind :: (r -> a) -> (a -> r -> b) -> r -> b
+rdrBind g f = (\r -> f (g r) r)
+-- rdrBind g f = f =<< g
+
+-- this is (<*>) :: f a -> f (a -> b) -> f b
+rdrAp :: (r -> a) -> (r -> a -> b) -> r -> b
+rdrAp g f = (\r -> (f r) (g r))
+-- rdrAp g f = f <*> g
